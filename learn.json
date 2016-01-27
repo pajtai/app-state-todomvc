@@ -17,12 +17,6 @@
 				"url": "https://github.com/pajtai/app-state/blob/master/README.md"
 			}
 			]
-		}, {
-			"heading": "Community",
-			"links": [{
-				"name": "Gitter chat room",
-				"url": "https://gitter.im/riot/riot"
-			}]
 		}]
 	},
 	"templates": {
