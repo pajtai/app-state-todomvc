@@ -42,7 +42,7 @@ function editingTodo(editedStream) {
 
     editedStream
         .fork()
-        .find(function(edit) {
+        .filter(function(edit) {
             return !! edit.editing;
         })
         .each(function(edit) {
@@ -51,7 +51,7 @@ function editingTodo(editedStream) {
 
     editedStream
         .fork()
-        .find(function(edit) {
+        .filter(function(edit) {
             return ! edit.editing;
         })
         .each(function(edit) {
@@ -63,13 +63,13 @@ function filter(filter) {
     todosModel.updateFilter(filter);
 }
 
-function doneEditingTodo(todoView, editedText) {
+function doneEditingTodo(todo, editedText) {
 
-    if (!todoView.opts.vmodel.editing) {
+    if (!todo.editing) {
         return;
     }
 
-    todosModel.updateTodo(todoView, editedText);
+    todosModel.updateTodo(todo, editedText);
     saveTodos();
 }
 

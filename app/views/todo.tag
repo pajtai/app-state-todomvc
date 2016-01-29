@@ -31,49 +31,45 @@ todo
         }
 
         function editTodo() {
-            var doneEditingEmitter = new EventEmitter,
-                keypressStream = _h('keypress', this.eventKeyEmitter),
-                editedStream = _h('edit', doneEditingEmitter);
+            var keypressStream = _h('keypress', this.eventKeyEmitter),
+                enterStream,
+                escStream,
+                initialValue;
 
-            editedStream.emit('edit', {
-                todo : self.opts.vmodel,
-                editing : true
-            });
-
-            keypressStream
+            enterStream = keypressStream
                     .fork()
-                    .find(function (event) {
+                    .filter(function (event) {
                         return constants.ENTER_KEY === event.which;
                     })
-                    .done(function () {
-                        editedStream
-                            .emit('edit', {
-                                todo : self.opts.vmodel,
-                                editing : false,
-                                editedValue : getEditedValue()
-                            })
-                            .done();
+                    .map(function () {
+                        return {
+                                editedValue : self.getEditedValue()
+                            };
                     });
 
-            keypressStream
+            escStream = keypressStream
                     .fork()
-                    .find(function (event) {
+                    .filter(function (event) {
                         return constants.ESC_KEY === event.which;
                     })
-                    .done(function() {
-                        editedStream
-                            .emit('edit', {
-                                todo : self.opts.vmodel,
-                                editing : false,
+                    .map(function() {
+                        return {
                                 editedValue : self.opts.vmodel.title
-                            })
-                            .done();
+                            };
                     });
             // Todoeditbox value is local to this view
             // no one needs to know about it - no appState change - until user confirms by hitting enter
             this.todoeditbox.value = this.opts.vmodel.title;
 
-            actions.todo.editing(self, editedStream);
+            initialValue = _h([{
+                todo: self.opts.vmodel,
+                editing: true
+            }]);
+            actions.todo.editing(_h([initialValue, enterStream, escStream]).merge().map(function(edited) {
+                edited.todo = self.opts.vmodel;
+                edited.editing = !! edited.editing;
+                return edited;
+            }));
         }
 
         function editKeyUp(event) {
