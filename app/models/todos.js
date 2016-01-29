@@ -28,14 +28,14 @@ function updateTodos(todos) {
     appState('todos.data', todos);
 }
 
-function updateTodo(todoView, enteredText) {
+function updateTodo(todo, enteredText) {
     enteredText = enteredText && enteredText.trim();
     if (enteredText) {
-        todoView.opts.vmodel.title = enteredText;
+        todo.title = enteredText;
     } else {
-        this.removeTodo(todoView);
+        this.removeTodo(todo);
     }
-    todoView.opts.vmodel.editing = false;
+    todo.editing = false;
 }
 
 function updateFilter(filter) {
@@ -50,18 +50,13 @@ function removeCompleted() {
     while (counter--) {
         todo = todos[counter];
         if (todo.completed) {
-            this.removeTodo({
-                opts : {
-                    vmodel : todo
-                }
-            });
+            this.removeTodo(todo);
         }
     }
 }
 
-function removeTodo(todoView) {
-    var todo = todoView.opts.vmodel,
-        todos = appState('todos.data');
+function removeTodo(todo) {
+    var todos = appState('todos.data');
 
     todo = _.find(todos, function(t) {
         return t === todo;
@@ -73,8 +68,8 @@ function removeTodo(todoView) {
     }
 }
 
-function startEditing(todoView) {
-    todoView.opts.vmodel.editing = true;
+function startEditing(todo) {
+    todo.editing = true;
 }
 
 

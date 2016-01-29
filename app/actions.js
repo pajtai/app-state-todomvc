@@ -38,26 +38,24 @@ function initApp(data) {
         });
 }
 
-function editingTodo(todoView, keypressStream) {
-    var todo = todoView.opts.vmodel;
-    todosModel.startEditing(todoView);
+function editingTodo(editedStream) {
 
-    keypressStream
+    editedStream
         .fork()
-        .find(function(event) {
-            return constants.ENTER_KEY === event.which;
+        .find(function(edit) {
+            return !! edit.editing;
         })
-        .done(function() {
-            doneEditingTodo(todoView, todoView.getEditedValue());
+        .each(function(edit) {
+            todosModel.startEditing(edit.todo);
         });
 
-    keypressStream
+    editedStream
         .fork()
-        .find(function(event) {
-            return constants.ESC_KEY === event.which;
+        .find(function(edit) {
+            return ! edit.editing;
         })
-        .done(function() {
-            doneEditingTodo(todoView, todo.title);
+        .each(function(edit) {
+            doneEditingTodo(edit.todo, edit.editedValue);
         });
 }
 

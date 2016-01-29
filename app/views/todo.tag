@@ -31,13 +31,49 @@ todo
         }
 
         function editTodo() {
-            var keypressStream = _h('keypress', this.eventKeyEmitter);
+            var doneEditingEmitter = new EventEmitter,
+                keypressStream = _h('keypress', this.eventKeyEmitter),
+                editedStream = _h('edit', doneEditingEmitter);
 
+            editedStream.emit('edit', {
+                todo : self.opts.vmodel,
+                editing : true
+            });
+
+            keypressStream
+                    .fork()
+                    .find(function (event) {
+                        return constants.ENTER_KEY === event.which;
+                    })
+                    .done(function () {
+                        editedStream
+                            .emit('edit', {
+                                todo : self.opts.vmodel,
+                                editing : false,
+                                editedValue : getEditedValue()
+                            })
+                            .done();
+                    });
+
+            keypressStream
+                    .fork()
+                    .find(function (event) {
+                        return constants.ESC_KEY === event.which;
+                    })
+                    .done(function() {
+                        editedStream
+                            .emit('edit', {
+                                todo : self.opts.vmodel,
+                                editing : false,
+                                editedValue : self.opts.vmodel.title
+                            })
+                            .done();
+                    });
             // Todoeditbox value is local to this view
             // no one needs to know about it - no appState change - until user confirms by hitting enter
             this.todoeditbox.value = this.opts.vmodel.title;
 
-            actions.todo.editing(this, keypressStream);
+            actions.todo.editing(self, editedStream);
         }
 
         function editKeyUp(event) {
@@ -46,7 +82,7 @@ todo
 
         function removeTodo() {
             console.log('remove');
-            actions.todo.remove(this);
+            actions.todo.remove(this.opts.vmodel);
         }
 
         function doneEdit() {
