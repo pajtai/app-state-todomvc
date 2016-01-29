@@ -88,7 +88,6 @@ function toggleAll(checked) {
 
 
 function _setRemainingString(todos) {
-    console.log('remaining');
     var todos = appState('todos.data'),
         completed = _.filter(todos, function(todo) {
             return !todo.completed;
@@ -108,7 +107,6 @@ function _setRemainingString(todos) {
 }
 
 function _filterTodos() {
-    console.log('filter');
     var filter = appState('todos.filter'),
         filtered,
         todos = appState('todos.data');

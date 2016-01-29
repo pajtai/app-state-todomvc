@@ -11,6 +11,7 @@
 
 var appState = require('./appState'),
     api = require('./api'),
+    constants = require('./constants'),
     todosModel = require('./models/todos'),
     _ = require('lodash');
 
@@ -37,8 +38,27 @@ function initApp(data) {
         });
 }
 
-function editingTodo(todoView) {
+function editingTodo(todoView, keypressStream) {
+    var todo = todoView.opts.vmodel;
     todosModel.startEditing(todoView);
+
+    keypressStream
+        .fork()
+        .find(function(event) {
+            return constants.ENTER_KEY === event.which;
+        })
+        .done(function() {
+            doneEditingTodo(todoView, todoView.getEditedValue());
+        });
+
+    keypressStream
+        .fork()
+        .find(function(event) {
+            return constants.ESC_KEY === event.which;
+        })
+        .done(function() {
+            doneEditingTodo(todoView, todo.title);
+        });
 }
 
 function filter(filter) {
