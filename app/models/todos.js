@@ -14,9 +14,9 @@ module.exports = {
     toggleAll       : toggleAll
 };
 
-function addTodo(value) {
-    var todos = appState('todos.data');
-    todos.push({ title: value, completed: false });
+function addTodo(data, value) {
+    data.push({ title: value, completed: false });
+    return data;
 }
 
 function updateTodo(todoView, enteredText) {

@@ -61,7 +61,7 @@ function addTodo(value) {
         return;
     }
 
-    todosModel.addTodo(value);
+    appState.transform('todos.data', todosModel.addTodo, value);
     saveTodos();
 }
 
@@ -93,7 +93,7 @@ function saveTodos() {
     api
         .save(appState('todos.data'))
         .then(function(todos) {
-            todosModel.updateTodos(todos);
+            appState('todos.data', todos);
         });
 
 }

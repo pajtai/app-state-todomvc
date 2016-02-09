@@ -8,14 +8,14 @@ todo-app
             ul.todo-list(riot-tag="todos")
         footer.footer(if="{ appState('todos.data').length }")
             span.todo-count
-                strong { appState('todos.remaining') }
+                strong { model.remaining }
             ul.filters
                 li
-                    a(class="{ selected : 'all' === appState('filter.active') }" href="#/all") All
+                    a(class="{ selected : 'all' === model.filter }" href="#/all") All
                 li
-                    a(class="{ selected : 'active' === appState('filter.active') }" href="#/active") Active
+                    a(class="{ selected : 'active' === model.filter }" href="#/active") Active
                 li
-                    a(class="{ selected : 'completed' === appState('filter.active') }" href="#/completed") Completed
+                    a(class="{ selected : 'completed' === model.filter }" href="#/completed") Completed
             button.clear-completed(onclick="{ removeCompleted }") Clear completed
     footer.info
         p Double-click to edit a todo
@@ -28,7 +28,10 @@ todo-app
                 var self = this,
                     constants = require('../constants.json'),
                     actions = require('../actions'),
+                    footerModel = require('./footer/model'),
                     mixins = require('../mixins');
+
+                mixins.stream('todos').transform(footerModel).to(this);
 
                 this.mixin(mixins.listen(['']));
                 this.addTodo = addTodo;

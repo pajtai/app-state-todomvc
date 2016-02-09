@@ -4,7 +4,8 @@ var appState = require('./appState'),
     _ = require('lodash');
 
 module.exports = {
-    listen : listen
+    listen : listen,
+    stream : stream
 };
 
 /**
@@ -37,4 +38,29 @@ function listen(pathsArray) {
 function init() {
     this.appState = appState;
     this.on('mount', this.update);
+}
+
+function stream(key) {
+    return {
+        transform : transform.bind(null, key)
+    }
+}
+
+function transform(key, viewModel) {
+    return {
+        to : to.bind(null, key, viewModel)
+    }
+}
+
+function to(key, viewModel, view) {
+    var stream = appState
+        .stream(key);
+
+    viewModel(stream)
+        .each(function(data) {
+            console.log('update', data);
+            view.update({
+                model : data
+            });
+        });
 }
