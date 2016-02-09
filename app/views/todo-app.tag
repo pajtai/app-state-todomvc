@@ -1,12 +1,11 @@
-todos
+todo-app
     section.todoapp
         header.header
             h1 todos
             input.new-todo(autofocus autocomplete="off" placeholder="What needs to be done?" onkeyup='{ addTodo }')
         section.main(if="{ appState('todos.data').length }")
             input.toggle-all(type="checkbox" onclick="{ toggleAll }")
-            ul.todo-list
-                li.todo(riot-tag="todo" class='{ completed: opts.vmodel.completed, editing: opts.vmodel.editing }' vmodel="{ viewModel }" each='{ viewModel in appState("todos.filtered") }' )
+            ul.todo-list(riot-tag="todos")
         footer.footer(if="{ appState('todos.data').length }")
             span.todo-count
                 strong { appState('todos.remaining') }

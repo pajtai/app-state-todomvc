@@ -3,14 +3,9 @@
 var appState = require('../appState'),
     _ = require('lodash');
 
-appState.calculations({
-    'todos.filtered' : _filterTodos,
-    'todos.remaining' : _setRemainingString
-});
 
 module.exports = {
     addTodo         : addTodo,
-    updateTodos     : updateTodos,
     updateTodo      : updateTodo,
     updateFilter    : updateFilter,
     removeCompleted : removeCompleted,
@@ -22,10 +17,6 @@ module.exports = {
 function addTodo(value) {
     var todos = appState('todos.data');
     todos.push({ title: value, completed: false });
-}
-
-function updateTodos(todos) {
-    appState('todos.data', todos);
 }
 
 function updateTodo(todoView, enteredText) {

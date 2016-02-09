@@ -33,7 +33,8 @@ function initApp(data) {
     api
         .fetch()
         .then(function(todos) {
-            todosModel.updateTodos(todos);
+            console.log(todos);
+            appState('todos.data', todos);
         });
 }
 
