@@ -30,8 +30,8 @@ function updateTodo(todoView, enteredText) {
 }
 
 function removeCompleted(todos) {
-    return _.filter(todos, function(todo) {
-        return ! todo.completed;
+    return _.filter(todos, function (todo) {
+        return !todo.completed;
     });
 }
 
@@ -54,9 +54,8 @@ function startEditing(todoView) {
 }
 
 
-function toggleAll(checked) {
-    var todos = appState('todos');
-    _.forEach(todos, function (todo) {
+function toggleAll(todos, checked) {
+    return _.map(todos, function (todo) {
         todo.completed = !!checked;
     });
 }

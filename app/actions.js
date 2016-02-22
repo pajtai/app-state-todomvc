@@ -80,7 +80,8 @@ function removeTodo(todoView) {
 }
 
 function toggleAll(checked) {
-    todosModel.toggleAll(checked);
+    appState.transform('todos', todosModel.toggleAll, checked);
+    debugger;
     saveTodos();
 }
 
