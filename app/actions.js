@@ -81,7 +81,6 @@ function removeTodo(todoView) {
 
 function toggleAll(checked) {
     appState.transform('todos', todosModel.toggleAll, checked);
-    debugger;
     saveTodos();
 }
 

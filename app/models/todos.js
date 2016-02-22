@@ -57,5 +57,6 @@ function startEditing(todoView) {
 function toggleAll(todos, checked) {
     return _.map(todos, function (todo) {
         todo.completed = !!checked;
+        return todo;
     });
 }
