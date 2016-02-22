@@ -3,22 +3,19 @@
 var riot = require('riot'),
     actions = require('./actions'),
     router = require('./router'),
-    todoApp = require('./views/todo-app.tag');
+    app = require('./views/app/view.tag');
 
 // Include nested tags, so they are avialable to use
+require('./views/add-todo/view.tag');
+require('./views/filter/view.tag');
 require('./views/todos/view.tag');
-require('./views/todo.tag');
 
 actions.initApp({
-    todos : {
-        data : [],
-        filtered : [],
-        filter : 'all',
-        remaining : '0 items left'
-    }
+    todos : [],
+    filter : 'all',
+    remaining : '0 items left'
 });
 
-// This is not in initApp to avoid a circular require reference
 router.init();
 
-riot.mount(todoApp);
+riot.mount(app);

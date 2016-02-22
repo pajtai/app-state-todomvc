@@ -11,8 +11,7 @@ function init() {
 
     riot.route(function(base) {
         var filter = base || 'all';
-        appState('filter.active', filter)
-        actions.filter(filter);
+        appState('filter', filter);
     });
 
     riot.route.start(true);

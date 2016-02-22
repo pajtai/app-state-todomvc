@@ -1,6 +1,6 @@
 'use strict';
 
-var state = require('immutable-app-state').init({
+var state = require('app-state/stream').init({
     devTools : true
 });
 

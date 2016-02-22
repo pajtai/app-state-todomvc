@@ -33,8 +33,7 @@ function initApp(data) {
     api
         .fetch()
         .then(function(todos) {
-            console.log(todos);
-            appState('todos.data', todos);
+            appState('todos', todos);
         });
 }
 
@@ -65,8 +64,9 @@ function addTodo(value) {
     saveTodos();
 }
 
-function toggle(todoView) {
-    todoView.opts.vmodel.completed = !todoView.opts.vmodel.completed;
+function toggle() {
+    var todo = this.todo;
+    debugger;
     saveTodos();
 }
 

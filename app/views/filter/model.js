@@ -15,31 +15,25 @@ function transform() {
                 filter = data[1];
 
             return {
-                filteredTodos : applyFilter(todos, filter),
+                remaining : calculateRemaining(todos),
                 filter : filter
             };
-        })
-        .map(function(data) {
-            console.log(data);
-            return data;
         });
 }
 
-function applyFilter(todos, filter) {
-    filter = filter || 'all';
-
-    switch (filter) {
-    case 'active':
-        todos = _.filter(todos, function(todo) {
+function calculateRemaining(todos) {
+    var unfinished = _.filter(todos, function (todo) {
             return !todo.completed;
-        });
+        }),
+        remaining = '';
+
+    switch (unfinished.length) {
+    case 1:
+        remaining = 'One item left';
         break;
-    case 'completed':
-        todos = _.filter(todos, function(todo) {
-            return !!todo.completed;
-        });
+    default:
+        remaining = unfinished.length + ' items left';
         break;
     }
-
-    return todos;
+    return remaining;
 }

@@ -7,6 +7,10 @@ var childProcess    = require('child_process'),
     children        = [],
     spawn           = childProcess.spawn;
 
+process.on('SIGINT', cleanExit); // catch ctrl-c
+process.on('SIGTERM', cleanExit); // catch kill
+process.on('exit', cleanExit);
+
 runCommands([
     ['python -m SimpleHTTPServer', 'Starting static assets server', { async : true }],
     ['watchify app/index.js -dv -o bundle.js']
