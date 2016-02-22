@@ -1,7 +1,7 @@
 todos
     input.toggle-all(type="checkbox" onclick="{ toggleAll }")
     ul.todo-list
-        li.todo(class='{ completed: todo.completed, editing: todo.editing }' each='{ todo in model.filteredTodos }' )
+        li.todo(class='{ completed: todo.completed, editing: todo.editing }' each='{ todo in model.filteredTodos }')
             .view
                 input.toggle(type="checkbox" checked="{ todo.completed }" onclick="{ actions.todo.toggle }")
                 label(ondblclick="{ editTodo }") { todo.title }

@@ -33,6 +33,8 @@ function initApp(data) {
     api
         .fetch()
         .then(function(todos) {
+            console.log('todos', todos);
+
             appState('todos', todos);
         });
 }

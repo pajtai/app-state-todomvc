@@ -1,7 +1,6 @@
 'use strict';
 
-var riot = require('riot'),
-    actions = require('./actions');
+var riot = require('riot');
 
 module.exports = {
     init : init

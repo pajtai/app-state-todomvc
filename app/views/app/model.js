@@ -11,8 +11,9 @@ function transform() {
     return appState
         .stream('todos')
         .map(function(data) {
+            var todos = data[0] || [];
             return {
-                numTodos : data[0].length
+                numTodos : todos.length
             };
         });
 }
