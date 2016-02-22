@@ -62,13 +62,15 @@ function addTodo(value) {
         return;
     }
 
-    appState.transform('todos.data', todosModel.addTodo, value);
+
+    appState.transform('todos', todosModel.addTodo, value);
     saveTodos();
 }
 
 function toggle() {
-    var todo = this.todo;
-    debugger;
+    this.todo.completed = !this.todo.completed;
+
+    // These saves could be done with a subscription to appState('todos') and a set here, but that is harder to track down
     saveTodos();
 }
 
@@ -83,7 +85,7 @@ function toggleAll(checked) {
 }
 
 function removeCompleted() {
-    todosModel.removeCompleted();
+    appState.transform('todos', todosModel.removeCompleted);
     saveTodos();
 }
 
@@ -93,9 +95,9 @@ function saveTodos() {
     // controlled by appState is a convenient thing to put in actions
 
     api
-        .save(appState('todos.data'))
+        .save(appState('todos'))
         .then(function(todos) {
-            appState('todos.data', todos);
+            appState('todos', todos);
         });
 
 }

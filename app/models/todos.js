@@ -5,17 +5,17 @@ var appState = require('../appState'),
 
 
 module.exports = {
-    addTodo         : addTodo,
-    updateTodo      : updateTodo,
-    updateFilter    : updateFilter,
-    removeCompleted : removeCompleted,
-    removeTodo      : removeTodo,
-    startEditing    : startEditing,
-    toggleAll       : toggleAll
+    addTodo: addTodo,
+    updateTodo: updateTodo,
+    removeCompleted: removeCompleted,
+    removeTodo: removeTodo,
+    startEditing: startEditing,
+    toggleAll: toggleAll
 };
 
 function addTodo(data, value) {
-    data.push({ title: value, completed: false });
+    value = '' + value;
+    data.push({title: value.trim(), completed: false});
     return data;
 }
 
@@ -29,32 +29,17 @@ function updateTodo(todoView, enteredText) {
     todoView.opts.vmodel.editing = false;
 }
 
-function updateFilter(filter) {
-    appState('todos.filter', filter);
-}
-
-function removeCompleted() {
-    var todos = appState('todos.data'),
-        todo,
-        counter = todos.length;
-
-    while (counter--) {
-        todo = todos[counter];
-        if (todo.completed) {
-            this.removeTodo({
-                opts : {
-                    vmodel : todo
-                }
-            });
-        }
-    }
+function removeCompleted(todos) {
+    return _.filter(todos, function(todo) {
+        return ! todo.completed;
+    });
 }
 
 function removeTodo(todoView) {
     var todo = todoView.opts.vmodel,
-        todos = appState('todos.data');
+        todos = appState('todos');
 
-    todo = _.find(todos, function(t) {
+    todo = _.find(todos, function (t) {
         return t === todo;
     });
 
@@ -69,56 +54,9 @@ function startEditing(todoView) {
 }
 
 
-
 function toggleAll(checked) {
-    var todos = appState('todos.data');
-    _.forEach(todos, function(todo) {
+    var todos = appState('todos');
+    _.forEach(todos, function (todo) {
         todo.completed = !!checked;
     });
-}
-
-
-function _setRemainingString(todos) {
-    console.log('remaining');
-    var todos = appState('todos.data'),
-        completed = _.filter(todos, function(todo) {
-            return !todo.completed;
-        }),
-        remaining = '';
-
-    switch (completed.length) {
-    case 1:
-        remaining = 'One item left';
-        break;
-    default:
-        remaining =  completed.length + ' items left';
-        break;
-    }
-
-    return remaining;
-}
-
-function _filterTodos() {
-    console.log('filter');
-    var filter = appState('todos.filter'),
-        filtered,
-        todos = appState('todos.data');
-
-    switch (filter) {
-    case 'active':
-        filtered = _.filter(todos, function(todo) {
-            return !todo.completed;
-        });
-        break;
-    case 'completed':
-        filtered = _.filter(todos, function(todo) {
-            return !!todo.completed;
-        });
-        break;
-    default:
-        filtered = todos;
-        break;
-    }
-
-    return filtered;
 }

@@ -12,6 +12,8 @@ filter
     script.
         var Model = require('./model');
 
+        this.actions = require('../../actions');
+
         this.model = new Model();
         this.model.onUpdate(this.update);
 

@@ -12,7 +12,7 @@ module.exports = {
 function fetch() {
     return BB
         .try(function() {
-            JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
+            return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]')
         })
         .catch(function(e) {
             console.log('local storage fetch error:', e);
