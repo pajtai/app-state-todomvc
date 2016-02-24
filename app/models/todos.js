@@ -9,7 +9,6 @@ module.exports = {
     updateTodo: updateTodo,
     removeCompleted: removeCompleted,
     removeTodo: removeTodo,
-    startEditing: startEditing,
     toggleAll: toggleAll
 };
 
@@ -19,14 +18,14 @@ function addTodo(data, value) {
     return data;
 }
 
-function updateTodo(todoView, enteredText) {
+function updateTodo(todo, enteredText) {
     enteredText = enteredText && enteredText.trim();
     if (enteredText) {
-        todoView.opts.vmodel.title = enteredText;
+        todo.title = enteredText;
     } else {
-        this.removeTodo(todoView);
+        this.removeTodo(todo);
     }
-    todoView.opts.vmodel.editing = false;
+    todo.editing = false;
 }
 
 function removeCompleted(todos) {
@@ -35,24 +34,17 @@ function removeCompleted(todos) {
     });
 }
 
-function removeTodo(todoView) {
-    var todo = todoView.opts.vmodel,
-        todos = appState('todos');
-
+function removeTodo(todos, todo) {
     todo = _.find(todos, function (t) {
         return t === todo;
     });
 
     if (todo) {
         todos.splice(todos.indexOf(todo), 1);
-        this.updateTodos(todos);
     }
-}
 
-function startEditing(todoView) {
-    todoView.opts.vmodel.editing = true;
+    return todos;
 }
-
 
 function toggleAll(todos, checked) {
     return _.map(todos, function (todo) {

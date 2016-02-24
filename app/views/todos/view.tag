@@ -8,15 +8,26 @@ todos
                 button.destroy(onclick="{ actions.todo.remove }")
             input.edit(name="todoeditbox" type="text" onblur="{ doneEdit }" onkeyup="{ editKeyUp }")
     script.
-        var Model = require('./model');
+        var Model = require('./model'),
+            _ = require('lodash'),
+            H = require('highland'),
+            actions = require('../../actions'),
+            constants = require('../../constants'),
+            self = this;
+
+        this.editKeyUpStream = H();
+        this.editKeyUpStream
+            .fork()
+            .filter(function(event) {
+                return constants.ENTER_KEY === event.event.which;
+            })
+            .each(function(event) {
+                actions.todo.doneEditing(event.self.todo, event.self.todoeditbox.value);
+            })
 
         this.model = new Model();
         this.model.onUpdate(this.update);
 
-        var appState = require('../../appState'),
-            _ = require('lodash'),
-            actions = require('../../actions'),
-            constants = require('../../constants');
 
         this.actions = actions;
         this.toggleAll = toggleAll;
@@ -30,23 +41,18 @@ todos
 
 
         function editTodo () {
-            actions.todo.editing(this);
 
             // Todoeditbox value is local to this view
             // no one needs to know about it - no appState change - until user confirms by hitting enter
-            this.todoeditbox.value = this.opts.vmodel.title;
+            this.todoeditbox.value = this.todo.title;
+            this.todo.editing = true;
         }
 
         function editKeyUp (event) {
-            switch (event.which) {
-            case constants.ENTER_KEY:
-                this.doneEdit();
-                break;
-            case constants.ESC_KEY:
-                this.todoeditbox.value = this.opts.vmodel.title;
-                this.doneEdit();
-                break;
-            }
+            this.editKeyUpStream.write({
+                event : event,
+                self : this
+            });
         }
 
         function doneEdit () {
