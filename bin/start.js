@@ -5,7 +5,12 @@ var childProcess    = require('child_process'),
     chalk           = require('chalk'),
     _               = require('lodash'),
     children        = [],
-    spawn           = childProcess.spawn;
+    spawn           = childProcess.spawn,
+    stopped         = false;
+
+process.on('SIGINT', cleanExit); // catch ctrl-c
+process.on('SIGTERM', cleanExit); // catch kill
+process.on('exit', cleanExit);
 
 runCommands([
     ['python -m SimpleHTTPServer', 'Starting static assets server', { async : true }],
