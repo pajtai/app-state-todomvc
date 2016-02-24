@@ -11,7 +11,7 @@
 
 var appState = require('./appState'),
     api = require('./api'),
-    todosModel = require('./models/todos'),
+    todosModel = require('./transforms/todos'),
     _ = require('lodash');
 
 module.exports = {
@@ -33,7 +33,6 @@ function initApp(data) {
     api
         .fetch()
         .then(function(todos) {
-            console.log('todos', todos);
 
             appState('todos', todos);
         });
