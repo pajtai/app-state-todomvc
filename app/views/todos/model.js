@@ -20,7 +20,6 @@ function transform() {
             };
         })
         .map(function(data) {
-            console.log(data);
             return data;
         });
 }

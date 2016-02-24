@@ -4,9 +4,9 @@ var _ = require('lodash');
 
 module.exports = {
     add: addTodo,
-    update: updateTodo,
+    update: update,
     removeCompleted: removeCompleted,
-    remove: removeTodo,
+    remove: remove,
     toggleAll: toggleAll
 };
 
@@ -16,14 +16,15 @@ function addTodo(data, value) {
     return data;
 }
 
-function updateTodo(todo, enteredText) {
+function update(todos, todo, enteredText) {
     enteredText = enteredText && enteredText.trim();
     if (enteredText) {
         todo.title = enteredText;
     } else {
-        this.removeTodo(todo);
+        todos = remove(todos, todo);
     }
     todo.editing = false;
+    return todos;
 }
 
 function removeCompleted(todos) {
@@ -32,7 +33,7 @@ function removeCompleted(todos) {
     });
 }
 
-function removeTodo(todos, todo) {
+function remove(todos, todo) {
     todo = _.find(todos, function (t) {
         return t === todo;
     });

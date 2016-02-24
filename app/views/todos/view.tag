@@ -10,25 +10,13 @@ todos
     script.
         var Model = require('./model'),
             _ = require('lodash'),
-            H = require('highland'),
             todoEvents = require('../../appEvents/todo'),
             todosEvents = require('../../appEvents/todos'),
             constants = require('../../constants'),
             self = this;
 
-        this.editKeyUpStream = H();
-        this.editKeyUpStream
-            .fork()
-            .filter(function(event) {
-                return constants.ENTER_KEY === event.event.which;
-            })
-            .each(function(event) {
-                todoEvents.doneEditing(event.self.todo, event.self.todoeditbox.value);
-            })
-
         this.model = new Model();
         this.model.onUpdate(this.update);
-
 
         this.todoEvents = todoEvents;
         this.toggleAll = toggleAll;
@@ -36,6 +24,7 @@ todos
         function toggleAll(event) {
             todosEvents.toggleAll(event.target.checked);
         }
+
         this.editTodo = editTodo;
         this.doneEdit = doneEdit;
         this.editKeyUp = editKeyUp;
@@ -50,10 +39,14 @@ todos
         }
 
         function editKeyUp (event) {
-            this.editKeyUpStream.write({
-                event : event,
-                self : this
-            });
+            switch (event.which) {
+                case constants.ESC_KEY:
+                    this.todoeditbox.value = this.todo.title;
+                    // fall through
+                case constants.ENTER_KEY:
+                    todoEvents.doneEditing(this.todo, this.todoeditbox.value);
+                    break;
+            }
         }
 
         function doneEdit () {
