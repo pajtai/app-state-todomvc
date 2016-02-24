@@ -3,17 +3,21 @@
 var _ = require('lodash');
 
 module.exports = {
-    add: addTodo,
+    add: add,
     update: update,
     removeCompleted: removeCompleted,
     remove: remove,
     toggleAll: toggleAll
 };
 
-function addTodo(data, value) {
+function add(todos, value) {
     value = '' + value;
-    data.push({title: value.trim(), completed: false});
-    return data;
+    todos.push({
+        title: value.trim(),
+        completed: false,
+        editing: false
+    });
+    return todos;
 }
 
 function update(todos, todo, enteredText) {
