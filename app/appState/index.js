@@ -1,6 +1,6 @@
 'use strict';
 
-var state = require('app-state').init({
+var state = require('app-state/stream').init({
     devTools : true
 });
 

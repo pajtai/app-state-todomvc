@@ -1,23 +1,21 @@
 'use strict';
 
 var riot = require('riot'),
-    actions = require('./actions'),
+    initEvents = require('./appEvents/init'),
     router = require('./router'),
-    todos = require('./views/todos.tag');
-
-// Include nested tags, so they are avialable to use
-require('./views/todo.tag')
-
-actions.initApp({
-    todos : {
-        data : [],
-        filtered : [],
-        filter : 'all',
-        remaining : '0 items left'
-    }
+    app = require('./views/app/view.tag');
+//
+//// Include nested tags, so they are avialable to use
+require('./views/add-todo/view.tag');
+require('./views/filter/view.tag');
+require('./views/todos/view.tag');
+//
+initEvents.app({
+    todos : [],
+    filter : 'all',
+    remaining : '0 items left'
 });
 
-// This is not in initApp to avoid a circular require reference
 router.init();
 
-riot.mount(todos);
+riot.mount(app);

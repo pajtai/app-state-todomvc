@@ -1,12 +1,12 @@
 {
   "private": true,
   "dependencies": {
-    "app-state": "^0.3.0",
+    "app-state": "^1.1.1",
     "bluebird": "^3.1.1",
     "chalk": "^1.1.1",
-    "envify": "^3.4.0",
+    "highland": "^2.6.0",
     "jade": "^1.11.0",
-    "lodash": "^3.10.1",
+    "lodash": "^4.5.1",
     "riot": "^2.2.4",
     "riotify": "^0.1.2",
     "todomvc-app-css": "^2.0.0",
@@ -14,7 +14,6 @@
   },
   "browserify": {
     "transform": [
-      "envify",
       [
         "riotify",
         {
