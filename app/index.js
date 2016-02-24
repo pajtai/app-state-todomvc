@@ -1,7 +1,7 @@
 'use strict';
 
 var riot = require('riot'),
-    actions = require('./actions'),
+    initEvents = require('./appEvents/init'),
     router = require('./router'),
     app = require('./views/app/view.tag');
 //
@@ -10,7 +10,7 @@ require('./views/add-todo/view.tag');
 require('./views/filter/view.tag');
 require('./views/todos/view.tag');
 //
-actions.initApp({
+initEvents.app({
     todos : [],
     filter : 'all',
     remaining : '0 items left'

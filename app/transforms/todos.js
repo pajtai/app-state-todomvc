@@ -2,12 +2,11 @@
 
 var _ = require('lodash');
 
-
 module.exports = {
-    addTodo: addTodo,
-    updateTodo: updateTodo,
+    add: addTodo,
+    update: updateTodo,
     removeCompleted: removeCompleted,
-    removeTodo: removeTodo,
+    remove: removeTodo,
     toggleAll: toggleAll
 };
 

@@ -4,7 +4,7 @@ add-todo
     script.
         var H = require('highland'),
             constants = require('../../constants.json'),
-            actions = require('../../actions'),
+            todoEvents = require('../../appEvents/todo'),
             self = this;
 
         self.keyPress = keyPress;
@@ -18,7 +18,7 @@ add-todo
                 return event.which === constants.ENTER_KEY;
             })
             .each(function() {
-                actions.todo.add(self.addtodo.value);
+                todoEvents.add(self.addtodo.value);
                 self.addtodo.value = '';
             });
 

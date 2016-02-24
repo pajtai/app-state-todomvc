@@ -3,15 +3,16 @@ todos
     ul.todo-list
         li.todo(class='{ completed: todo.completed, editing: todo.editing }' each='{ todo in model.filteredTodos }')
             .view
-                input.toggle(type="checkbox" checked="{ todo.completed }" onclick="{ actions.todo.toggle }")
+                input.toggle(type="checkbox" checked="{ todo.completed }" onclick="{ todoEvents.toggle }")
                 label(ondblclick="{ editTodo }") { todo.title }
-                button.destroy(onclick="{ actions.todo.remove }")
+                button.destroy(onclick="{ todoEvents.remove }")
             input.edit(name="todoeditbox" type="text" onblur="{ doneEdit }" onkeyup="{ editKeyUp }")
     script.
         var Model = require('./model'),
             _ = require('lodash'),
             H = require('highland'),
-            actions = require('../../actions'),
+            todoEvents = require('../../appEvents/todo'),
+            todosEvents = require('../../appEvents/todos'),
             constants = require('../../constants'),
             self = this;
 
@@ -22,18 +23,18 @@ todos
                 return constants.ENTER_KEY === event.event.which;
             })
             .each(function(event) {
-                actions.todo.doneEditing(event.self.todo, event.self.todoeditbox.value);
+                todoEvents.doneEditing(event.self.todo, event.self.todoeditbox.value);
             })
 
         this.model = new Model();
         this.model.onUpdate(this.update);
 
 
-        this.actions = actions;
+        this.todoEvents = todoEvents;
         this.toggleAll = toggleAll;
 
         function toggleAll(event) {
-            actions.toggleAll(event.target.checked);
+            todosEvents.toggleAll(event.target.checked);
         }
         this.editTodo = editTodo;
         this.doneEdit = doneEdit;
@@ -56,6 +57,6 @@ todos
         }
 
         function doneEdit () {
-            actions.todo.doneEditing(this, this.todoeditbox.value);
+            todoEvents.doneEditing(this, this.todoeditbox.value);
         }
 

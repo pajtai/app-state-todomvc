@@ -8,11 +8,11 @@ filter
             a(class="{ selected : 'active' === model.filter }" href="#/active") Active
         li
             a(class="{ selected : 'completed' === model.filter }" href="#/completed") Completed
-    button.clear-completed(onclick="{ actions.removeCompleted }") Clear completed
+    button.clear-completed(onclick="{ todosEvents.removeCompleted }") Clear completed
     script.
         var Model = require('./model');
 
-        this.actions = require('../../actions');
+        this.todosEvents = require('../../appEvents/todos');
 
         this.model = new Model();
         this.model.onUpdate(this.update);
