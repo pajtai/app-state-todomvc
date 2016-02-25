@@ -1,7 +1,8 @@
 'use strict';
 
 var appState = require('../../appState'),
-    Model = require('../../lib/Model');
+    Model = require('../../lib/Model'),
+    _ = require('lodash');
 
 module.exports = Model.extend({
     transform : transform
